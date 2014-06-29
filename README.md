@@ -2,6 +2,8 @@
 
 [HeatWatch](http://heatwatch.io) browser client library
 
+> This project is a proof of concept
+
 ## Installation
 
 Via Bower package manager

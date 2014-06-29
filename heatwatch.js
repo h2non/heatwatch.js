@@ -106,7 +106,7 @@
   }())
 
   function trackData() {
-    if (store.mouse.length > 100 || store.click.length > 10) {
+    if (store.mouse.length > 100 || store.click.length > 3) {
       send({
         host: location.hostname,
         resolution: {

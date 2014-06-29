@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "HeatWatch browser client library",
   "homepage": "http://github.com/h2non/heatwatch.js",
-  "bugs": "https://github.com/h2non/heatwatch.js.js/issues",
+  "bugs": "https://github.com/h2non/heatwatch.js/issues",
   "author": "Tomas Aparicio",
   "repository": "h2non/heatwatch.js",
   "licenses": "MIT",
