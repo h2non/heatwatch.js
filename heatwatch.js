@@ -65,7 +65,7 @@
       }
       xhr.timeout = timeout
       xhr.setRequestHeader('X-API-Token', config.api)
-      xhr.setRequestHeader('X-API-Version', '0.1')
+      xhr.setRequestHeader('X-Version', '0.1')
       return xhr
     }
 
@@ -106,9 +106,11 @@
   }())
 
   function trackData() {
-    if (store.mouse.length > 100 || store.click.length > 3) {
+    if (store.mouse.length > 20 || store.click.length > 3) {
       send({
-        host: location.hostname,
+        app: location.hostname || location.host.split(':')[0],
+        time: now(),
+        timezone: new Date().getTimezoneOffset(),
         resolution: {
           height: global.outerHeight,
           width: global.outerWidth
@@ -127,7 +129,7 @@
       time: now(),
       key: ev.key || ev.charCode,
       ctrlKey: ev.ctrlKey,
-      place: ev.location,
+      place: (ev.location || '').trim(),
       path: location.pathname
     }
     store.key.push(data)
@@ -159,7 +161,7 @@
 
   function init() {
     var body = document.body
-    global.onkeypress = throttle(trackKeyEvent, 2000)
+    //global.onkeypress = throttle(trackKeyEvent, 2000)
     body.onclick = throttle(trackClickEvent, 500)
     body.onmousemove = throttle(trackMouseMove, 250)
   }

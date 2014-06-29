@@ -4,7 +4,7 @@ function send(res, code) {
   res.writeHead(code, {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'X-Requested-With, X-API-Token, X-API-Version'
+    'Access-Control-Allow-Headers': 'X-Requested-With, X-API-Token, X-Version'
   })
   res.end()
 }

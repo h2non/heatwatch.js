@@ -1,8 +1,10 @@
 # heatwatch.js
 
+> This project is a proof of concept
+
 [HeatWatch](http://heatwatch.io) browser client library
 
-> This project is a proof of concept
+For a real demo, see [heatwatch-demo](https://github.com/h2non/heatwatch-demo)
 
 ## Installation
 
