@@ -1,0 +1,19 @@
+{
+  "name": "heatwatch",
+  "version": "0.1.0",
+  "description": "HeatWatch browser client library",
+  "homepage": "http://github.com/h2non/heatwatch.js",
+  "bugs": "https://github.com/h2non/heatwatch.js.js/issues",
+  "author": "Tomas Aparicio",
+  "repository": "h2non/heatwatch.js",
+  "licenses": "MIT",
+  "main": "./heatwatch.js",
+  "ignore": [
+    "test",
+    ".gitignore",
+    ".travis.yml",
+    ".editorconfig",
+    "Makefile",
+    "package.json"
+  ]
+}
