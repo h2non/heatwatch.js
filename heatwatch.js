@@ -18,6 +18,14 @@
     return new Date().getTime()
   }
 
+  function flushStore() {
+    store = {
+      key: [],
+      click: [],
+      mouse: []
+    }
+  }
+
   function extend(target, obj) {
     if (typeof obj === 'object' && obj !== null) {
       for (var p in obj) {
@@ -41,6 +49,7 @@
 
   var send = (function () {
     var timeout = 5000
+    var url = config.server + '/track'
 
     function createClient(url) {
       var xhr = new XMLHttpRequest()
@@ -56,6 +65,7 @@
       }
       xhr.timeout = timeout
       xhr.setRequestHeader('X-API-Token', config.api)
+      xhr.setRequestHeader('X-API-Version', '0.1')
       return xhr
     }
 
@@ -81,9 +91,10 @@
       }
     }
 
-    return function request(url, data, cb) {
+    return function request(data, cb) {
       var errorHandler
       var xhr = createClient(url)
+      cb = cb || function () {}
       if (!xhr) { return }
 
       errorHandler = onError(cb)
@@ -95,15 +106,16 @@
   }())
 
   function trackData() {
-    if (store.mouse.length > 200) {
+    if (store.mouse.length > 100 || store.click.length > 10) {
       send({
-        host: location.host,
-        resolution: 
+        host: location.hostname,
+        resolution: {
           height: global.outerHeight,
           width: global.outerWidth
         },
-
+        data: store
       })
+      flushStore()
     }
   }
 
@@ -112,22 +124,21 @@
    */
   function trackKeyEvent(ev) {
     var data = {
-      type: 'keypress',
       time: now(),
       key: ev.key || ev.charCode,
       ctrlKey: ev.ctrlKey,
       place: ev.location,
-      location: location.href
+      path: location.pathname
     }
     store.key.push(data)
   }
 
   function trackClickEvent(ev) {
     var data = {
-      type: 'click',
       time: now(),
       x: ev.x || ev.clientX,
-      y: ev.y || ev.clientY
+      y: ev.y || ev.clientY,
+      path: location.pathname
     }
     if (ev.toElement) {
       data.text = ev.toElement.textContent || ev.toElement.outerText
@@ -137,20 +148,20 @@
 
   function trackMouseMove(ev) {
     var data = {
-      type: 'mousemove',
       time: now(),
       x: ev.x || ev.clientX,
-      y: ev.y || ev.clientY
+      y: ev.y || ev.clientY,
+      path: location.pathname
     }
     store.mouse.push(data)
     trackData()
   }
-  
+
   function init() {
     var body = document.body
-    global.onkeypress = trackKeyEvent
-    body.onclick = throttle(trackClickEvent, 300)
-    body.onmousemove = throttle(trackMouseMove, 300)
+    global.onkeypress = throttle(trackKeyEvent, 2000)
+    body.onclick = throttle(trackClickEvent, 500)
+    body.onmousemove = throttle(trackMouseMove, 250)
   }
 
   function setConfig(obj) {
@@ -164,7 +175,6 @@
   }
 
   global.heatwatch = {
-    store: store,
     config: setConfig
   }
 
